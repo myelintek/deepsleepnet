@@ -154,7 +154,7 @@ class DeepFeatureNet(object):
 
         # Concat
         name = "l{}_concat".format(self.layer_idx)
-        network = tf.concat(1, output_conns, name=name)
+        network = tf.concat(axis=1, values=output_conns, name=name)
         self.activations.append((name, network))
         self.layer_idx += 1
 
@@ -196,8 +196,8 @@ class DeepFeatureNet(object):
 
             # Cross-entropy loss
             loss = tf.nn.sparse_softmax_cross_entropy_with_logits(
-                self.logits,
-                self.target_var,
+                logits=self.logits,
+                labels=self.target_var,
                 name="sparse_softmax_cross_entropy_with_logits"
             )
             loss = tf.reduce_mean(loss, name="cross_entropy")
@@ -344,7 +344,7 @@ class DeepSleepNet(DeepFeatureNet):
             if self.return_last:
                 network = outputs[-1]
             else:
-                network = tf.reshape(tf.concat(1, outputs), [-1, hidden_size*2],
+                network = tf.reshape(tf.concat(axis=1, values=outputs), [-1, hidden_size*2],
                                      name=name)
             self.activations.append((name, network))
             self.layer_idx +=1

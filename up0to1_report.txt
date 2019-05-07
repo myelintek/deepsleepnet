@@ -1,0 +1,252 @@
+================================================================================
+Input tree: 'dsn_tf0'
+================================================================================
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/dhedfreader.py'
+ outputting to 'dsn_tf12/dhedfreader.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/submit_eAE.py'
+ outputting to 'dsn_tf12/submit_eAE.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/summary.py'
+ outputting to 'dsn_tf12/summary.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/train.py'
+ outputting to 'dsn_tf12/train.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/prepare_physionet.py'
+ outputting to 'dsn_tf12/prepare_physionet.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/predict.py'
+ outputting to 'dsn_tf12/predict.py'
+--------------------------------------------------------------------------------
+
+		'dsn_tf0/predict.py' Line 443
+		--------------------------------------------------------------------------------
+		Added keyword ['axis', 'values', 'name'] to reordered function 'tf.concat'
+		    Old: tf.concat(1, outputs)
+		    New: tf.concat(axis=1, values=outputs)
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/deepsleep/nn.py'
+ outputting to 'dsn_tf12/deepsleep/nn.py'
+--------------------------------------------------------------------------------
+
+		'dsn_tf0/deepsleep/nn.py' Line 43
+		--------------------------------------------------------------------------------
+		Renamed function 'tf.mul' to 'tf.multiply'
+		    Old: tf.mul(tf.nn.l2_loss(var), wd, name="weight_loss")
+		    New: tf.mul(tf.nn.l2_loss(var), wd, name="weight_loss")
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/deepsleep/sleep_stage.py'
+ outputting to 'dsn_tf12/deepsleep/sleep_stage.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/deepsleep/model.py'
+ outputting to 'dsn_tf12/deepsleep/model.py'
+--------------------------------------------------------------------------------
+
+		'dsn_tf0/deepsleep/model.py' Line 347
+		--------------------------------------------------------------------------------
+		Added keyword ['axis', 'values', 'name'] to reordered function 'tf.concat'
+		    Old: tf.concat(1, outputs)
+		    New: tf.concat(axis=1, values=outputs)
+
+		'dsn_tf0/deepsleep/model.py' Line 157
+		--------------------------------------------------------------------------------
+		Added keyword ['axis', 'values', 'name'] to reordered function 'tf.concat'
+		    Old: tf.concat(1, output_conns, name=name)
+		    New: tf.concat(axis=1, values=output_conns, name=name)
+
+		'dsn_tf0/deepsleep/model.py' Line 198
+		--------------------------------------------------------------------------------
+		Added keyword ['logits', 'labels', 'name'] to reordered function 'tf.nn.sparse_softmax_cross_entropy_with_logits'
+		    Old: tf.nn.sparse_softmax_cross_entropy_with_logits(
+                self.logits,
+                self.target_var,
+                name="sparse_softmax_cross_entropy_with_logits"
+            )
+		    New: tf.nn.sparse_softmax_cross_entropy_with_logits(
+                logits=self.logits,
+                labels=self.target_var,
+                name="sparse_softmax_cross_entropy_with_logits"
+            )
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/deepsleep/data_loader.py'
+ outputting to 'dsn_tf12/deepsleep/data_loader.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/deepsleep/utils.py'
+ outputting to 'dsn_tf12/deepsleep/utils.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/deepsleep/__init__.py'
+ outputting to 'dsn_tf12/deepsleep/__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/deepsleep/trainer.py'
+ outputting to 'dsn_tf12/deepsleep/trainer.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/deepsleep/loss.py'
+ outputting to 'dsn_tf12/deepsleep/loss.py'
+--------------------------------------------------------------------------------
+
+		'dsn_tf0/deepsleep/loss.py' Line 5
+		--------------------------------------------------------------------------------
+		Added keyword ['logits', 'labels', 'name'] to reordered function 'tf.nn.sparse_softmax_cross_entropy_with_logits'
+		    Old: tf.nn.sparse_softmax_cross_entropy_with_logits(
+        logits,
+        targets,
+        name="cross_entropy_per_example"
+    )
+		    New: tf.nn.sparse_softmax_cross_entropy_with_logits(
+        logits=logits,
+        labels=targets,
+        name="cross_entropy_per_example"
+    )
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/deepsleep/optimize.py'
+ outputting to 'dsn_tf12/deepsleep/optimize.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/tensorlayer/nlp.py'
+ outputting to 'dsn_tf12/tensorlayer/nlp.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/tensorlayer/iterate.py'
+ outputting to 'dsn_tf12/tensorlayer/iterate.py'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/tensorlayer/db.py'
+ outputting to 'dsn_tf12/tensorlayer/db.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/tensorlayer/files.py'
+ outputting to 'dsn_tf12/tensorlayer/files.py'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/tensorlayer/utils.py'
+ outputting to 'dsn_tf12/tensorlayer/utils.py'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/tensorlayer/rein.py'
+ outputting to 'dsn_tf12/tensorlayer/rein.py'
+--------------------------------------------------------------------------------
+
+		'dsn_tf0/tensorlayer/rein.py' Line 84
+		--------------------------------------------------------------------------------
+		Renamed function 'tf.mul' to 'tf.multiply'
+		    Old: tf.mul(cross_entropy, rewards)
+		    New: tf.mul(cross_entropy, rewards)
+
+		'dsn_tf0/tensorlayer/rein.py' Line 76
+		--------------------------------------------------------------------------------
+		Added keyword ['logits', 'labels', 'name'] to reordered function 'tf.nn.sparse_softmax_cross_entropy_with_logits'
+		    Old: tf.nn.sparse_softmax_cross_entropy_with_logits(labels=actions, logits=logits, name=name)
+		    New: tf.nn.sparse_softmax_cross_entropy_with_logits(labels=actions, logits=logits, name=name)
+
+		'dsn_tf0/tensorlayer/rein.py' Line 78
+		--------------------------------------------------------------------------------
+		Added keyword ['logits', 'labels', 'name'] to reordered function 'tf.nn.sparse_softmax_cross_entropy_with_logits'
+		    Old: tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits, targets=actions)
+		    New: tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits, targets=actions)
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/tensorlayer/visualize.py'
+ outputting to 'dsn_tf12/tensorlayer/visualize.py'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/tensorlayer/__init__.py'
+ outputting to 'dsn_tf12/tensorlayer/__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/tensorlayer/activation.py'
+ outputting to 'dsn_tf12/tensorlayer/activation.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/tensorlayer/prepro.py'
+ outputting to 'dsn_tf12/tensorlayer/prepro.py'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/tensorlayer/cost.py'
+ outputting to 'dsn_tf12/tensorlayer/cost.py'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/tensorlayer/layers.py'
+ outputting to 'dsn_tf12/tensorlayer/layers.py'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/tensorlayer/ops.py'
+ outputting to 'dsn_tf12/tensorlayer/ops.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/eAE/eAE.py'
+ outputting to 'dsn_tf12/eAE/eAE.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/eAE/__init__.py'
+ outputting to 'dsn_tf12/eAE/__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+Processing file 'dsn_tf0/eAE/Demo.py'
+ outputting to 'dsn_tf12/eAE/Demo.py'
+--------------------------------------------------------------------------------
+
+

@@ -81,5 +81,5 @@ def cross_entropy_reward_loss(logits, actions, rewards, name=None):
     try: ## TF1.0
         loss = tf.reduce_sum(tf.multiply(cross_entropy, rewards))
     except: ## TF0.12
-        loss = tf.reduce_sum(tf.mul(cross_entropy, rewards))   # element-wise mul
+        loss = tf.reduce_sum(tf.multiply(cross_entropy, rewards))   # element-wise mul
     return loss

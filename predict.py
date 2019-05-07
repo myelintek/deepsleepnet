@@ -440,7 +440,7 @@ class CustomDeepSleepNet(DeepSleepNet):
             if self.return_last:
                 network = outputs[-1]
             else:
-                network = tf.reshape(tf.concat(1, outputs), [-1, hidden_size*2],
+                network = tf.reshape(tf.concat(axis=1, values=outputs), [-1, hidden_size*2],
                                      name=name)
             self.activations.append((name, network))
             self.layer_idx +=1
