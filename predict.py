@@ -7,6 +7,8 @@ import time
 import numpy as np
 import tensorflow as tf
 
+import tensorflow.contrib.rnn as rnn
+
 from datetime import datetime
 
 from sklearn.metrics import confusion_matrix, f1_score
@@ -77,7 +79,7 @@ def _reverse_seq(input_seq, lengths):
             input_.set_shape(input_shape)
 
         # Join into (time, batch_size, depth)
-        s_joined = array_ops.pack(sequence)
+        s_joined = array_ops.stack(sequence)
 
         # TODO(schuster, ebrevdo): Remove cast when reverse_sequence takes int32
         if lengths is not None:
@@ -86,7 +88,7 @@ def _reverse_seq(input_seq, lengths):
         # Reverse along dimension 0
         s_reversed = array_ops.reverse_sequence(s_joined, lengths, 0, 1)
         # Split again into list
-        result = array_ops.unpack(s_reversed)
+        result = array_ops.unstack(s_reversed)
         for r, flat_result in zip(result, flat_results):
             r.set_shape(input_shape)
             flat_result.append(r)
@@ -324,7 +326,13 @@ def custom_bidirectional_rnn(cell_fw, cell_bw, inputs,
     flat_output_fw = nest.flatten(output_fw)
     flat_output_bw = nest.flatten(output_bw)
 
-    flat_outputs = tuple(array_ops.concat(1, [fw, bw])
+
+    #print("flat_output_fw = {}".format( len(flat_output_fw )))
+    #print("flat_output_bw = {}".format( len(flat_output_bw )))
+
+    #for fw, bw in zip(flat_output_fw, flat_output_bw):
+    #    print("zip = {} \n      {}".format( fw, bw ))
+    flat_outputs = tuple(array_ops.concat([fw, bw], 1)
                         for fw, bw in zip(flat_output_fw, flat_output_bw))
 
     outputs = nest.pack_sequence_as(structure=output_fw,
@@ -401,26 +409,43 @@ class CustomDeepSleepNet(DeepSleepNet):
         name = "l{}_bi_lstm".format(self.layer_idx)
         hidden_size = 512   # will output 1024 (512 forward, 512 backward)
         with tf.variable_scope(name) as scope:
-            fw_lstm_cell = tf.nn.rnn_cell.LSTMCell(hidden_size,
-                                                   use_peepholes=True,
-                                                   state_is_tuple=True)
-            bw_lstm_cell = tf.nn.rnn_cell.LSTMCell(hidden_size,
-                                                   use_peepholes=True,
-                                                   state_is_tuple=True)
-            if self.use_dropout_sequence:
-                keep_prob = 0.5 if self.is_train else 1.0
-                fw_lstm_cell = tf.nn.rnn_cell.DropoutWrapper(
-                    fw_lstm_cell,
-                    output_keep_prob=keep_prob
-                )
-                bw_lstm_cell = tf.nn.rnn_cell.DropoutWrapper(
-                    bw_lstm_cell,
-                    output_keep_prob=keep_prob
-                )
+            #fw_lstm_cell = tf.nn.rnn_cell.LSTMCell(hidden_size,
+            #                                       use_peepholes=True,
+            #                                       state_is_tuple=True)
+            #bw_lstm_cell = tf.nn.rnn_cell.LSTMCell(hidden_size,
+            #                                       use_peepholes=True,
+            #                                       state_is_tuple=True)
+            #if self.use_dropout_sequence:
+            #    keep_prob = 0.5 if self.is_train else 1.0
+            #    fw_lstm_cell = tf.nn.rnn_cell.DropoutWrapper(
+            #        fw_lstm_cell,
+            #        output_keep_prob=keep_prob
+            #    )
+            #    bw_lstm_cell = tf.nn.rnn_cell.DropoutWrapper(
+            #        bw_lstm_cell,
+            #        output_keep_prob=keep_prob
+            #    )
 
-            fw_cell = tf.nn.rnn_cell.MultiRNNCell([fw_lstm_cell] * self.n_rnn_layers,
+            #fw_cell = tf.nn.rnn_cell.MultiRNNCell([fw_lstm_cell] * self.n_rnn_layers,
+            #                                      state_is_tuple=True)
+            #bw_cell = tf.nn.rnn_cell.MultiRNNCell([bw_lstm_cell] * self.n_rnn_layers,
+            #                                      state_is_tuple=True)
+
+            def get_cells_of_a_layer():
+                lstm_cell = tf.nn.rnn_cell.LSTMCell( hidden_size,
+                                                     use_peepholes=True,
+                                                     state_is_tuple=True)
+                if self.use_dropout_sequence:
+                    keep_prob = 0.5 if self.is_train else 1.0
+                    lstm_cell = tf.nn.rnn_cell.DropoutWrapper(
+                        lstm_cell,
+                        output_keep_prob=keep_prob
+                    )
+                return lstm_cell
+
+            fw_cell = tf.nn.rnn_cell.MultiRNNCell([get_cells_of_a_layer() for _ in range(self.n_rnn_layers)] ,
                                                   state_is_tuple=True)
-            bw_cell = tf.nn.rnn_cell.MultiRNNCell([bw_lstm_cell] * self.n_rnn_layers,
+            bw_cell = tf.nn.rnn_cell.MultiRNNCell([get_cells_of_a_layer() for _ in range(self.n_rnn_layers)],
                                                   state_is_tuple=True)
 
             # Initial state of RNN
@@ -428,7 +453,7 @@ class CustomDeepSleepNet(DeepSleepNet):
             self.bw_initial_state = bw_cell.zero_state(self.batch_size, tf.float32)
 
             # Feedforward to MultiRNNCell
-            list_rnn_inputs = tf.unpack(seq_input, axis=1)
+            list_rnn_inputs = tf.unstack(seq_input, axis=1)
             outputs, fw_state, bw_state, fw_states, bw_states = custom_bidirectional_rnn(
                 cell_fw=fw_cell,
                 cell_bw=bw_cell,
@@ -708,3 +733,15 @@ def main(argv=None):
 
 if __name__ == "__main__":
     tf.app.run()
+
+# vis note:
+# the dimension problem has been resolved, however, the model can't be
+# loadded still while restoring, because RNN has been changed a lot, so
+# the network structure is not compatible with custom_rnn in this file.
+#
+# The error message records here:
+#    tensorflow.python.framework.errors_impl.NotFoundError: Restoring from checkpoint failed. This is most likely due to a Variable name or other graph key that is missing from the checkpoint. Please ensure that you have not altered the graph expected based on the checkpoint. Original error:
+# 
+#    Key deepsleepnet/l21_bi_lstm/BiRNN/BW/multi_rnn_cell/cell_0/lstm_cell/bias not found in checkpoint
+#    	 [[node save/RestoreV2 (defined at predict.py:661)  = RestoreV2[dtypes=[DT_FLOAT, DT_FLOAT, DT_FLOAT, DT_FLOAT, DT_FLOAT, ..., DT_FLOAT, DT_FLOAT, DT_FLOAT, DT_FLOAT, DT_FLOAT], _device="/job:localhost/replica:0/task:0/device:CPU:0"](_arg_save/Const_0_0, save/RestoreV2/tensor_names, save/RestoreV2/shape_and_slices)]]
+ 

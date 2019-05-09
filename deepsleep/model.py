@@ -331,7 +331,7 @@ class DeepSleepNet(DeepFeatureNet):
                                                      state_is_tuple=True) 
                 if self.use_dropout_sequence:
                     keep_prob = 0.5 if self.is_train else 1.0
-                    lstm_cell = rnn.DropoutWrapper(
+                    lstm_cell = tf.nn.rnn_cell.DropoutWrapper(
                         lstm_cell,
                         output_keep_prob=keep_prob
                     )
