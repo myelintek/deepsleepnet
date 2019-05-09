@@ -94,3 +94,6 @@ ENV/
 
 # Visual Studio Code
 .vscode
+
+# output folder
+output/

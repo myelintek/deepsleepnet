@@ -757,6 +757,9 @@ def predict(
 
             y_true.extend(y_true_)
             y_pred.extend(y_pred_)
+
+            print("Truth: \n{}\n".format(y_true))
+            print("Prediction: \n{}\n".format(y_pred))
         
     # Overall performance
     print "[{}] Overall prediction performance\n".format(datetime.now())
