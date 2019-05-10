@@ -2,8 +2,10 @@ import os
 
 import numpy as np
 
-from deepsleep.sleep_stage import print_n_samples_each_class
-from deepsleep.utils import get_balance_class_oversample
+#from deepsleep.sleep_stage import print_n_samples_each_class
+#from deepsleep.utils import get_balance_class_oversample
+from sleep_stage import print_n_samples_each_class
+from utils import get_balance_class_oversample
 
 import re
 
@@ -209,7 +211,7 @@ class SeqDataLoader(object):
             # Reshape the data to match the input of the model - conv2d
             tmp_data = np.squeeze(tmp_data)
             tmp_data = tmp_data[:, :, np.newaxis, np.newaxis]
-            
+
             # # Reshape the data to match the input of the model - conv1d
             # tmp_data = tmp_data[:, :, np.newaxis]
 
@@ -352,7 +354,7 @@ class SeqDataLoader(object):
                 # Reshape the data to match the input of the model - conv2d
                 tmp_data = np.squeeze(tmp_data)
                 tmp_data = tmp_data[:, :, np.newaxis, np.newaxis]
-                
+
                 # # Reshape the data to match the input of the model - conv1d
                 # tmp_data = tmp_data[:, :, np.newaxis]
 

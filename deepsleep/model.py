@@ -3,18 +3,19 @@ import tensorflow as tf
 # 05082019
 import tensorflow.contrib.rnn as rnn
 
-from deepsleep.nn import *
+#from deepsleep.nn import *
+from nn import *
 
 class DeepFeatureNet(object):
 
     def __init__(
-        self, 
-        batch_size, 
-        input_dims, 
-        n_classes, 
-        is_train, 
-        reuse_params, 
-        use_dropout, 
+        self,
+        batch_size,
+        input_dims,
+        n_classes,
+        is_train,
+        reuse_params,
+        use_dropout,
         name="deepfeaturenet"
     ):
         self.batch_size = batch_size
@@ -33,13 +34,13 @@ class DeepFeatureNet(object):
         # Input
         name = "x_train" if self.is_train else "x_valid"
         self.input_var = tf.placeholder(
-            tf.float32, 
+            tf.float32,
             shape=[self.batch_size, self.input_dims, 1, 1],
             name=name + "_inputs"
         )
         # Target
         self.target_var = tf.placeholder(
-            tf.int32, 
+            tf.int32,
             shape=[self.batch_size, ],
             name=name + "_targets"
         )
@@ -52,7 +53,7 @@ class DeepFeatureNet(object):
         name = "l{}_conv".format(self.layer_idx)
         with tf.variable_scope(name) as scope:
             output = conv_1d(name="conv1d", input_var=input_var, filter_shape=[filter_size, 1, n_in_filters, n_filters], stride=stride, bias=None, wd=wd)
-            
+
             # # MONITORING
             # self.monitor_vars.append(("{}_before_bn".format(name), output))
 
@@ -178,7 +179,7 @@ class DeepFeatureNet(object):
 
         # Get loss and prediction operations
         with tf.variable_scope(self.name) as scope:
-            
+
             # Reuse variables for validation
             if self.reuse_params:
                 scope.reuse_variables()
@@ -227,26 +228,26 @@ class DeepFeatureNet(object):
 class DeepSleepNet(DeepFeatureNet):
 
     def __init__(
-        self, 
-        batch_size, 
-        input_dims, 
-        n_classes, 
+        self,
+        batch_size,
+        input_dims,
+        n_classes,
         seq_length,
         n_rnn_layers,
         return_last,
-        is_train, 
+        is_train,
         reuse_params,
-        use_dropout_feature, 
+        use_dropout_feature,
         use_dropout_sequence,
         name="deepsleepnet"
     ):
         super(self.__class__, self).__init__(
-            batch_size=batch_size, 
-            input_dims=input_dims, 
-            n_classes=n_classes, 
-            is_train=is_train, 
-            reuse_params=reuse_params, 
-            use_dropout=use_dropout_feature, 
+            batch_size=batch_size,
+            input_dims=input_dims,
+            n_classes=n_classes,
+            is_train=is_train,
+            reuse_params=reuse_params,
+            use_dropout=use_dropout_feature,
             name=name
         )
 
@@ -260,13 +261,13 @@ class DeepSleepNet(DeepFeatureNet):
         # Input
         name = "x_train" if self.is_train else "x_valid"
         self.input_var = tf.placeholder(
-            tf.float32, 
+            tf.float32,
             shape=[self.batch_size*self.seq_length, self.input_dims, 1, 1],
             name=name + "_inputs"
         )
         # Target
         self.target_var = tf.placeholder(
-            tf.int32, 
+            tf.int32,
             shape=[self.batch_size*self.seq_length, ],
             name=name + "_targets"
         )
@@ -328,7 +329,7 @@ class DeepSleepNet(DeepFeatureNet):
             def get_cells_of_a_layer():
                 lstm_cell = tf.nn.rnn_cell.LSTMCell( hidden_size,
                                                      use_peepholes=True,
-                                                     state_is_tuple=True) 
+                                                     state_is_tuple=True)
                 if self.use_dropout_sequence:
                     keep_prob = 0.5 if self.is_train else 1.0
                     lstm_cell = tf.nn.rnn_cell.DropoutWrapper(
@@ -395,7 +396,7 @@ class DeepSleepNet(DeepFeatureNet):
 
         # Get loss and prediction operations
         with tf.variable_scope(self.name) as scope:
-            
+
             # Reuse variables for validation
             if self.reuse_params:
                 scope.reuse_variables()
